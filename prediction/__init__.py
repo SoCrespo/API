@@ -21,6 +21,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(response)
     else:
         return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a user ID in the query string or in the request body to get predictions.",
+             "This HTTP triggered function executed successfully. Pass a userId in the query string or in the request body to get predictions.",
              status_code=200
         )

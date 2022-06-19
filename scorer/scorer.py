@@ -61,10 +61,3 @@ class Scorer:
         session = session[['user_id','click_article_id', 'score']]
         
         return session
-
-if __name__ == '__main__':
-    metadata = pd.read_csv('news-portal-user-interactions-by-globocom/articles_metadata.csv')
-    scorer = Scorer(metadata)
-    result = scorer.score([300,1_000, 20_000])
-    print(result)
-    print(type(result))

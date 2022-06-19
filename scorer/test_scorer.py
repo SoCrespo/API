@@ -1,4 +1,4 @@
-from scoring import Scorer
+from scorer import Scorer
 import pandas as pd
 import numpy as np
 

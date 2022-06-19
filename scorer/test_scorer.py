@@ -17,11 +17,11 @@ def sc():
     return Scorer(metadata)
 
 
-def test_score_type(sc):
+def test_score_return_ndarray(sc):
     assert isinstance(sc._score([300, 1_000, 20_000]), np.ndarray)
 
 
-def test_score_result(sc):
+def test_score_result_on_sample(sc):
     assert np.array_equal(sc._score([300, 1_000, 20_000]), [[0], [1], [1]])
 
 
@@ -32,6 +32,7 @@ def test_score_session_is_df(sc, session):
 def test_score_session_has_expected_cols(sc, session):
     result = sc._compute_scores_on_session(session)
     assert list(result.columns) == ['user_id', 'click_article_id', 'score']
+
 
 def test_score_session_return_binary_scores(sc, session):
     result = sc._compute_scores_on_session(session)

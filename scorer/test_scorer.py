@@ -5,16 +5,20 @@ import numpy as np
 
 
 @pytest.fixture
+def user_data():
+    return pd.read_csv('./user_data.csv')
+
+
+@pytest.fixture
 def session():
-    clicks_sample = pd.read_csv('/home/sophie/Documents/OPENCLASSROOMS/OC-IA-P9/'
-                                'API/scorer/clicks_sample.csv')
-    return clicks_sample[clicks_sample['session_id'] == 1506826382352801]
+    user_data = pd.read_csv('./user_data.csv')
+    session_id = user_data['session_id'].unique()[0]
+    return user_data[user_data['session_id'] == session_id]
 
 
 @pytest.fixture
 def sc():
-    metadata = pd.read_csv('news-portal-user-interactions-by-globocom/articles_metadata.csv')
-    return Scorer(metadata)
+    return Scorer()
 
 
 def test_score_return_ndarray(sc):
@@ -36,4 +40,9 @@ def test_score_session_has_expected_cols(sc, session):
 
 def test_score_session_return_binary_scores(sc, session):
     result = sc._compute_scores_on_session(session)
-    assert all([ item in [0, 1] for item in result['score'].values])
+    assert all([item in [0, 1] for item in result['score'].values])
+
+
+def test_score_session_return_binary_scores_for_user(sc, user_data):
+    result = sc.compute_scores(user_data)
+    assert all([item in [0, 1] for item in result['score'].values])

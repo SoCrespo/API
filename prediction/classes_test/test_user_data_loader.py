@@ -1,6 +1,12 @@
 # coding = utf-8
+import os
+import sys
+CURRENT_DIR = os.getcwd()
+PARENT_DIR = os.path.dirname(CURRENT_DIR)
+sys.path.append(PARENT_DIR)
+
 import pytest
-from user_data_loader import UserDataLoader
+from prediction.classes.user_data_loader import UserDataLoader
 import pandas as pd
 
 @pytest.fixture
@@ -21,3 +27,4 @@ def test_user_data_loader_has_expected_cols(result):
     'session_start',
     'click_timestamp',
     'words_count']]
+

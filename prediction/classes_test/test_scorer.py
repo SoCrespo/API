@@ -1,5 +1,12 @@
+import os
+import sys
+CURRENT_DIR = os.getcwd()
+PARENT_DIR = os.path.dirname(CURRENT_DIR)
+sys.path.append(PARENT_DIR)
+
+
 import pytest
-from scorer import Scorer
+from API.prediction.classes.scorer import Scorer
 import pandas as pd
 import numpy as np
 

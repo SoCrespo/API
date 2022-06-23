@@ -1,7 +1,8 @@
 import logging
 import json
-from prediction.recommend import recommend
+from .recommend import recommend
 import azure.functions as func
+
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
@@ -23,6 +24,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(response)
     else:
         return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a userId in the query string or in the request body to get predictions.",
-             status_code=200
+            ("This HTTP triggered function executed successfully. "
+             "Pass a userId in the query string or in the request "
+             "body to get predictions."),
+            status_code=200
         )

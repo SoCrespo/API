@@ -11,7 +11,7 @@ import pandas as pd
 
 @pytest.fixture
 def result():
-    return UserDataLoader().get_data_for_user(0)
+    return UserDataLoader().get_data_for_user('0')
 
 def test_user_data_loader_is_df(result):
     assert isinstance(result, pd.DataFrame)

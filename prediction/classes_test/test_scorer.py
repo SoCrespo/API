@@ -6,19 +6,19 @@ sys.path.append(PARENT_DIR)
 
 
 import pytest
-from API.prediction.classes.scorer import Scorer
+from prediction.classes.scorer import Scorer
 import pandas as pd
 import numpy as np
 
 
 @pytest.fixture
 def user_data():
-    return pd.read_csv('./user_data.csv')
+    return pd.read_csv('prediction/classes_test/user_data.csv')
 
 
 @pytest.fixture
 def session():
-    user_data = pd.read_csv('./user_data.csv')
+    user_data = pd.read_csv('prediction/classes_test/user_data.csv')
     session_id = user_data['session_id'].unique()[0]
     return user_data[user_data['session_id'] == session_id]
 

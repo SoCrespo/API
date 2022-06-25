@@ -2,13 +2,14 @@
 import logging
 import pandas as pd
 from dask import dataframe as ddf
+
 if __name__ == '__main__':
     import os
     import sys
     CURRENT_DIR = os.getcwd()
     PARENT_DIR = os.path.dirname(CURRENT_DIR)
     sys.path += [CURRENT_DIR, PARENT_DIR]
-    from API.prediction import params
+    from prediction import params
 else:    
     from .. import params
 
@@ -30,8 +31,8 @@ class UserDataLoader:
         self.merged['user_id'] = self.merged['user_id'].astype(str)
         print('Data loaded')
 
-    def get_data_for_user(self, user_id: str) -> pd.DataFrame:
-        data = self.merged[self.merged['user_id'] == user_id]
+    def get_data_for_user(self, user_id: int) -> pd.DataFrame:
+        data = self.merged[self.merged['user_id'] == str(user_id)]
         if data.empty:
             raise ValueError('User not found')
         else:
@@ -40,10 +41,3 @@ class UserDataLoader:
     def get_most_read_articles_ids(self) -> list:
         most_read = self.merged.groupby('click_article_id').count().sort_values(ascending=False).head(params.nb)
         return most_read['user_id'].values.tolist()
-        
-
-
-if __name__ == '__main__':
-    udm = UserDataLoader()
-    # udm.get_data_for_user(0).to_csv('./user_data.csv', index=False)
-    print(udm.get_most_read_articles_ids())

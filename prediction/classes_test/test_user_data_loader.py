@@ -11,7 +11,11 @@ import pandas as pd
 
 @pytest.fixture
 def result():
-    return UserDataLoader().get_data_for_user('0')
+    return UserDataLoader().get_data_for_user('0')    
+
+@pytest.fixture
+def most_read():
+    return UserDataLoader().get_most_read_articles_ids()    
 
 def test_user_data_loader_is_df(result):
     assert isinstance(result, pd.DataFrame)
@@ -28,3 +32,8 @@ def test_user_data_loader_has_expected_cols(result):
     'click_timestamp',
     'words_count']]
 
+def test_most_read_return_list(most_read):
+    assert isinstance(most_read, list)
+
+def test_most_read_is_not_empty(most_read):
+    assert len(most_read) > 0

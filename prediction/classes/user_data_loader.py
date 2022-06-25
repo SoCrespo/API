@@ -21,23 +21,29 @@ class UserDataLoader:
     def __init__(self, root_dir=root_dir) -> None:
         """Class to get readings from data."""
         self.root_dir = root_dir
-        print("Loading data")
-        clicks = ddf.read_csv(self.root_dir + 'clicks/*.csv').compute()
-        articles_metadata = pd.read_csv(self.root_dir + 'articles_metadata.csv')
-        print('Merging data')
-        self.merged = clicks.merge(articles_metadata,
-                                   left_on='click_article_id',
-                                   right_on='article_id',)
-        self.merged['user_id'] = self.merged['user_id'].astype(str)
-        print('Data loaded')
+        self.clicks = self.get_clicks()
+        self.articles_metadata = self.get_articles_metadata()
+
+    def get_clicks(self) -> pd.DataFrame:
+        return ddf.read_csv(self.root_dir + 'clicks/*.csv',
+        dtype={'user_id': str, 'click_article_id': str}).compute()   
+
+    def get_articles_metadata(self) -> pd.DataFrame:
+        return pd.read_csv(self.root_dir + 'articles_metadata.csv',
+                           dtype={'article_id': str})
 
     def get_data_for_user(self, user_id: int) -> pd.DataFrame:
-        data = self.merged[self.merged['user_id'] == str(user_id)]
+        data = self.clicks[self.clicks['user_id'] == str(user_id)]
         if data.empty:
             raise ValueError('User not found')
-        else:
-            return data    
+        data = data.merge(self.articles_metadata, 
+                          left_on='click_article_id',
+                          right_on='article_id')
+        return data    
 
     def get_most_read_articles_ids(self) -> list:
-        most_read = self.merged.groupby('click_article_id').count().sort_values(ascending=False).head(params.nb)
+        most_read = self.clicks.groupby('click_article_id').count().sort_values(by='user_id', ascending=False).head(params.nb)
         return most_read['user_id'].values.tolist()
+
+if __name__=='__main__':
+    print(UserDataLoader().get_most_read_articles_ids())

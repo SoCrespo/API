@@ -6,16 +6,16 @@ PARENT_DIR = os.path.dirname(CURRENT_DIR)
 sys.path.append(PARENT_DIR)
 
 import pytest
-from prediction.classes.user_data_loader import UserDataLoader
+from prediction.classes.local_data_reader import LocalDataReader
 import pandas as pd
 
 @pytest.fixture
 def result():
-    return UserDataLoader().get_data_for_user('0')    
+    return LocalDataReader().get_data_for_user('0')    
 
 @pytest.fixture
 def most_read():
-    return UserDataLoader().get_most_read_articles_ids()    
+    return LocalDataReader().get_most_read_articles_ids()    
 
 def test_user_data_loader_is_df(result):
     assert isinstance(result, pd.DataFrame)

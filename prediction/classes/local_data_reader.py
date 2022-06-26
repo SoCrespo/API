@@ -16,19 +16,19 @@ else:
 root_dir = '/home/sophie/Documents/OPENCLASSROOMS/OC-IA-P9/news-portal-user-interactions-by-globocom/'
 
 
-class UserDataLoader:
+class LocalDataReader:
 
     def __init__(self, root_dir=root_dir) -> None:
         """Class to get readings from data."""
         self.root_dir = root_dir
-        self.clicks = self.get_clicks()
-        self.articles_metadata = self.get_articles_metadata()
+        self.clicks = self._get_clicks()
+        self.articles_metadata = self._get_articles_metadata()
 
-    def get_clicks(self) -> pd.DataFrame:
+    def _get_clicks(self) -> pd.DataFrame:
         return ddf.read_csv(self.root_dir + 'clicks/*.csv',
         dtype={'user_id': str, 'click_article_id': str}).compute()   
 
-    def get_articles_metadata(self) -> pd.DataFrame:
+    def _get_articles_metadata(self) -> pd.DataFrame:
         return pd.read_csv(self.root_dir + 'articles_metadata.csv',
                            dtype={'article_id': str})
 
@@ -46,4 +46,4 @@ class UserDataLoader:
         return most_read['user_id'].values.tolist()
 
 if __name__=='__main__':
-    print(UserDataLoader().get_most_read_articles_ids())
+    print(LocalDataReader().get_most_read_articles_ids())

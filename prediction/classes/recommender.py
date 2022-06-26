@@ -6,11 +6,11 @@ import pickle
 import os
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
-
+from .. import params
 
 class Recommender:
 
-    def __init__(self, root_dir, nb=5) -> None:
+    def __init__(self, root_dir, nb=params.nb) -> None:
         """
         Tool to recommend nb articles to a reader, based on
         previous readings.
@@ -19,6 +19,8 @@ class Recommender:
         self.root_dir = root_dir
         with open(self.root_dir + 'articles_embeddings.pickle', 'rb') as f:
             self.embeddings = pd.DataFrame(pickle.load(f))
+        self.embeddings.index = self.embeddings.index.astype(str)
+            
         self.model_pickle = self.root_dir + 'knn_pickle_file'
 
         if os.path.isfile(self.model_pickle):
@@ -36,7 +38,7 @@ class Recommender:
         with open(self.model_pickle, 'wb') as f:
             pickle.dump(self.model, f)
 
-    def recommend_from(self, articles_ids):
+    def recommend_from(self, articles_ids: list) -> list:
         """
         Return nb articles closest (by Euclidean distance) to articles that user liked.
         """

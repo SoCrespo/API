@@ -3,3 +3,4 @@
 local.settings.json
 test
 .venv
+.pytest_cache

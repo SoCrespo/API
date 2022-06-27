@@ -19,8 +19,7 @@ def recommend(user_id: str, only_on_liked=False):
         user_data = dr.get_data_for_user(user_id)
     except ValueError:
         logging.error('User not found, returning most popular articles.')
-        most_read = dr.get_most_read_articles_ids()
-        return most_read
+        return dr.get_most_read_articles_ids() 
 
     logging.warning(f'Got clicks for user {user_id}.')
     logging.warning(f'Scoring articles for user {user_id}...')

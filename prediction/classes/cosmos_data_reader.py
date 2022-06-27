@@ -48,6 +48,14 @@ class CosmosDataReader:
 
         print('Ready!'.ljust(60))
     
+    def get_embeddings(self) -> pd.DataFrame:
+        """
+        Get embeddings for all articles.
+        """
+        embeddings = self.embeddings_container.read_all_items()
+        columns = ['article_id'] + [str(i) for i in range(250)]
+        embeddings = pd.DataFrame(embeddings)[columns]
+        return embeddings
 
     def get_data_for_user(self, user_id: int) -> pd.DataFrame:
         """
@@ -80,8 +88,5 @@ class CosmosDataReader:
         most_read = pd.DataFrame(most_read)
         return most_read['click_article_id'].astype(str).values.tolist()
 
-    def get_embeddings(self) -> pd.DataFrame:
-        embeddings = self.embeddings_container.read_all_items()
-        columns = ['article_id'] + [str(i) for i in range(250)]
-        embeddings = pd.DataFrame(embeddings)[columns]
-        return embeddings
+
+

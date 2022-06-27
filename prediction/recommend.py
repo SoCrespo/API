@@ -1,18 +1,14 @@
 # encoding='utf-8'
 import logging
 from .classes.cosmos_data_reader import CosmosDataReader
+from .classes.blob_manager import BlobManager
 from .classes.scorer import Scorer
 from .classes.recommender import Recommender
-from . import params
 
-dr = CosmosDataReader(
-    params.endpoint,
-    params.read_key,
-    params.database_name,
-    params.clicks_container_name,
-    params.metadata_container_name)
+dr = CosmosDataReader()
+bm = BlobManager()
 sc = Scorer()
-rec = Recommender(nb=params.nb)
+rec = Recommender()
 
 
 def recommend(user_id: str, only_on_liked=False):

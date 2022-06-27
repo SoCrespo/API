@@ -13,10 +13,12 @@ from prediction import params
 
 class CosmosDataReader:
 
-    def __init__(self, endpoint, read_key, 
-                database_name, 
-                clicks_container_name, 
-                articles_metadata_container_name) -> None:
+    def __init__(self, 
+    endpoint = params.cosmos_endpoint,
+    read_key = params.cosmos_read_key,
+    database_name = params.cosmos_database_name,
+    clicks_container_name =  params.cosmos_clicks_container_name,
+    articles_metadata_container_name = params.cosmos_metadata_container_name) -> None:
         """
         Class to read data from cosmos database.
         """

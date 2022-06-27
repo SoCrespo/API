@@ -46,7 +46,6 @@ class Recommender:
         # For each article, find nb closest articles (by embedding vector)
 
         article_vectors = self.embeddings[self.embeddings['article_id'].isin(articles_ids)]
-        logging.warning(article_vectors.iloc[:, 1:].head())
         distances, recommended_i_ids = self.model.kneighbors(article_vectors.iloc[:, 1:])
         distances = distances.flatten()
         recommended_i_ids = recommended_i_ids.flatten()

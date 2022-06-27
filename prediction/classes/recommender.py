@@ -22,7 +22,7 @@ class Recommender:
         self.embeddings['article_id'] = self.embeddings['article_id'].astype(str)
         logging.warning('Embeddings loaded.')
         logging.warning('Loading model...')
-        self.model_pickle_file = './knn_pickle_file'
+        self.model_pickle_file = './knn.pkl'
         if os.path.isfile(self.model_pickle_file):
             with open(self.model_pickle_file, 'rb') as f:
                 self.model = pickle.load(f)

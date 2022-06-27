@@ -70,5 +70,5 @@ class CosmosDataReader:
         query = f"""SELECT c.click_article_id FROM c OFFSET 0 LIMIT 5"""
         most_read = list(self.clicks_container.query_items(query, enable_cross_partition_query=True))
         most_read = pd.DataFrame(most_read)
-        return most_read['click_article_id'].values.tolist()
+        return most_read['click_article_id'].astype(str).values.tolist()
 

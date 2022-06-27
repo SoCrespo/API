@@ -13,7 +13,7 @@ rec = Recommender()
 
 def recommend(user_id: str, only_on_liked=False):
     """
-    Return array of k article_id recommended for user_id.
+    Return array of article_ids recommended for user_id.
     """
     logging.warning(f'Getting clicks for user {user_id}...')
     try:

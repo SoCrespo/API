@@ -7,7 +7,9 @@ import os
 import warnings
 import logging
 warnings.filterwarnings("ignore", category=UserWarning)
+from .cosmos_data_reader import CosmosDataReader
 
+cr = CosmosDataReader()
 
 class Recommender:
 
@@ -23,7 +25,7 @@ class Recommender:
 
     def get_embeddings(self) -> pd.DataFrame:
         logging.warning('Loading embeddings...')
-        embeddings = pd.read_csv('/home/sophie/Documents/OPENCLASSROOMS/OC-IA-P9/send_data_to_azure/cosmos/embeddings_cosmos.csv')
+        embeddings = cr.get_embeddings()
         embeddings['article_id'] = embeddings['article_id'].astype(str)
         logging.warning('Embeddings loaded.')
         return embeddings

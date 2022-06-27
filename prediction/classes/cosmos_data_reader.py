@@ -18,7 +18,8 @@ class CosmosDataReader:
     read_key = params.cosmos_read_key,
     database_name = params.cosmos_database_name,
     clicks_container_name =  params.cosmos_clicks_container_name,
-    articles_metadata_container_name = params.cosmos_metadata_container_name) -> None:
+    articles_metadata_container_name = params.cosmos_metadata_container_name,
+    embeddings_container_name = params.cosmos_embeddings_container_name) -> None:
         """
         Class to read data from cosmos database.
         """
@@ -39,6 +40,11 @@ class CosmosDataReader:
         self.articles_metadata_container = self.database.get_container_client(
                         articles_metadata_container_name)
         print('Connected to articles metadata container.', end='\r')
+
+        print('Connecting to embeddings container...'.ljust(60), end='\r')    
+        self.embeddings_container = self.database.get_container_client(
+                        embeddings_container_name)
+        print('Connected to embeddings container.'.ljust(60), end='\r')
 
         print('Ready!'.ljust(60))
     
@@ -74,3 +80,8 @@ class CosmosDataReader:
         most_read = pd.DataFrame(most_read)
         return most_read['click_article_id'].astype(str).values.tolist()
 
+    def get_embeddings(self) -> pd.DataFrame:
+        embeddings = self.embeddings_container.read_all_items()
+        columns = ['article_id'] + [str(i) for i in range(250)]
+        embeddings = pd.DataFrame(embeddings)[columns]
+        return embeddings

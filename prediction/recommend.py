@@ -1,12 +1,10 @@
 # encoding='utf-8'
 import logging
 from .classes.cosmos_data_reader import CosmosDataReader
-from .classes.blob_manager import BlobManager
 from .classes.scorer import Scorer
 from .classes.recommender import Recommender
 
 dr = CosmosDataReader()
-bm = BlobManager()
 sc = Scorer()
 rec = Recommender()
 

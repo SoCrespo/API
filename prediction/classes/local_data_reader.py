@@ -32,6 +32,13 @@ class LocalDataReader:
         return pd.read_csv(self.root_dir + 'articles_metadata.csv',
                            dtype={'article_id': str})
 
+    def get_embeddings(self):
+        f = self.root_dir + 'articles_embeddings.pickle'
+        embeddings = pd.DataFrame(pd.read_pickle(f)).reset_index()
+        embeddings.rename(columns={'index': 'article_id'}, inplace=True)
+        embeddings['article_id'] = embeddings['article_id'].astype(str)
+        return embeddings
+
     def get_data_for_user(self, user_id: int) -> pd.DataFrame:
         data = self.clicks[self.clicks['user_id'] == str(user_id)]
         if data.empty:

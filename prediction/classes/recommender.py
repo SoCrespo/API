@@ -16,28 +16,45 @@ class Recommender:
         Tool to recommend nb articles to a reader, based on
         previous readings.
         """
-        logging.warning('Loading embeddings...')
         self.nb = nb
-        self.embeddings = pd.read_csv('/home/sophie/Documents/OPENCLASSROOMS/OC-IA-P9/send_data_to_azure/cosmos/embeddings_cosmos.csv')
-        self.embeddings['article_id'] = self.embeddings['article_id'].astype(str)
-        logging.warning('Embeddings loaded.')
-        logging.warning('Loading model...')
+        self.embeddings = self.get_embeddings()
         self.model_pickle_file = './knn.pkl'
-        if os.path.isfile(self.model_pickle_file):
-            with open(self.model_pickle_file, 'rb') as f:
-                self.model = pickle.load(f)
+        self.model = self.get_model()
+
+    def get_embeddings(self) -> pd.DataFrame:
+        logging.warning('Loading embeddings...')
+        embeddings = pd.read_csv('/home/sophie/Documents/OPENCLASSROOMS/OC-IA-P9/send_data_to_azure/cosmos/embeddings_cosmos.csv')
+        embeddings['article_id'] = embeddings['article_id'].astype(str)
+        logging.warning('Embeddings loaded.')
+        return embeddings
+
+    def get_model(self, refresh=False):
+        logging.warning('Loading model...')
+        if (refresh
+                or not os.path.isfile(self.model_pickle_file)
+                or os.path.getsize(self.model_pickle_file) == 0):
+
+            logging.warning('Model not found, computing...')
+            model = NearestNeighbors(n_neighbors=self.nb + 1) # +1 bc article itself is also returned
+            logging.warning('Fitting model...')
+            model.fit(self.embeddings.iloc[:, 1:])
+            logging.warning('Model fitted.')
+            logging.warning('Saving model...')
+            with open(self.model_pickle_file, 'wb') as f:
+                pickle.dump(model, f)
+            logging.warning('Model saved.')
+
         else:
-            self.model = NearestNeighbors(n_neighbors=nb + 1)  # +1 bc article itself is also returned
-            self.update_model()
-        logging.warning('Model loaded.')
+            logging.warning('Model found, loading...')
+            with open(self.model_pickle_file, 'rb') as f:
+                model = pickle.load(f)
+    
+        logging.warning('Model is ready.')
+        return model
 
     def update_model(self):
-        """
-        Fit the model to the embeddings and save it.
-        """
-        self.model.fit(self.embeddings.iloc[:, 1:])
-        with open(self.model_pickle_file, 'wb') as f:
-            pickle.dump(self.model, f)
+        self.model = self.get_model(refresh=True)
+    
 
     def recommend_from(self, articles_ids: list) -> list:
         """
@@ -59,3 +76,8 @@ class Recommender:
         # Return nb globally closest articles, excluding already read ones
         closest.sort(key=lambda tup: tup[1])
         return [item[0] for item in closest[:self.nb]]
+
+
+
+    
+

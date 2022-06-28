@@ -136,3 +136,4 @@ __azurite_db*__.json
 prediction/params.py
 knn.pkl
 .vscode
+prediction/.vscode

@@ -19,24 +19,24 @@ class Recommender:
         previous readings.
         """
         self.nb = nb
-        self.embeddings = self.get_embeddings()
+        self.embeddings = self.load_embeddings()
         self.model_pickle_file = './knn.pkl'
-        self.model = self.get_model()
+        self.model = self.load_model()
 
-    def get_embeddings(self) -> pd.DataFrame:
+    def load_embeddings(self) -> pd.DataFrame:
         logging.warning('Loading embeddings...')
         embeddings = cr.get_embeddings()
         embeddings['article_id'] = embeddings['article_id'].astype(str)
         logging.warning('Embeddings loaded.')
         return embeddings
 
-    def get_model(self, refresh=False):
+    def load_model(self, refresh=False):
         logging.warning('Loading model...')
         if (refresh
                 or not os.path.isfile(self.model_pickle_file)
                 or os.path.getsize(self.model_pickle_file) == 0):
 
-            logging.warning('Model not found, computing...')
+            logging.warning('Model not found, instantiating a new one...')
             model = NearestNeighbors(n_neighbors=self.nb + 1) # +1 bc article itself is also returned
             logging.warning('Fitting model...')
             model.fit(self.embeddings.iloc[:, 1:])
@@ -55,7 +55,7 @@ class Recommender:
         return model
 
     def update_model(self):
-        self.model = self.get_model(refresh=True)
+        self.model = self.load_model(refresh=True)
     
 
     def recommend_from(self, articles_ids: list) -> list:

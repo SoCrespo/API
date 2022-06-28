@@ -75,7 +75,3 @@ class Scorer:
         scores = scores.reset_index(drop=True)
         return scores
 
-
-if __name__ == '__main__':
-    user_data = pd.read_csv('./user_data.csv')
-    print(Scorer().compute_scores(user_data))

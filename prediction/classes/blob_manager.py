@@ -24,12 +24,4 @@ class BlobManager:
         """Download the blob file to the local file_path."""
         with open(file_path, "wb") as f:
             f.write(self.blob_client.download_blob().readall())
-
-if __name__ == '__main__':
-    bm = BlobManager()
-    with open('/home/sophie/Documents/OPENCLASSROOMS/OC-IA-P9/API/requirements.txt', 'rb') as f:
-        bm.send_file(f)
-    print('File sent.')
-    bm.load_file('./essai.txt')
-    print('File loaded.')
     

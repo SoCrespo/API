@@ -23,28 +23,28 @@ class CosmosDataReader:
         """
         Class to read data from cosmos database.
         """
-        print('Connecting to Cosmos DB...', end='\r')
+        print('Connecting to Cosmos DB...')
         self.client = CosmosClient(endpoint, read_key)
-        print('Connected to Cosmos DB.', end='\r')
+        print('Connected to Cosmos DB.')
 
-        print('Connecting to database...', end='\r')
+        print('Connecting to database...')
         self.database = self.client.get_database_client(database_name)
-        print('Connected to database.', end='\r')
+        print('Connected to database.')
 
-        print('Connecting to clicks container...', end='\r')
+        print('Connecting to clicks container...')
         self.clicks_container = self.database.get_container_client(
                         clicks_container_name)
-        print('Connected to clicks container.', end='\r')
+        print('Connected to clicks container.')
 
-        print('Connecting to articles metadata container...', end='\r')
+        print('Connecting to articles metadata container...')
         self.articles_metadata_container = self.database.get_container_client(
                         articles_metadata_container_name)
-        print('Connected to articles metadata container.', end='\r')
+        print('Connected to articles metadata container.')
 
-        print('Connecting to embeddings container...'.ljust(60), end='\r')    
+        print('Connecting to embeddings container...'.ljust(60))    
         self.embeddings_container = self.database.get_container_client(
                         embeddings_container_name)
-        print('Connected to embeddings container.'.ljust(60), end='\r')
+        print('Connected to embeddings container.'.ljust(60))
 
         print('Ready!'.ljust(60))
     

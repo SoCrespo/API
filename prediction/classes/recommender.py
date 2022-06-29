@@ -8,8 +8,11 @@ import warnings
 import logging
 warnings.filterwarnings("ignore", category=UserWarning)
 from .cosmos_data_reader import CosmosDataReader
+from .blob_manager import BlobManager
 
 cr = CosmosDataReader()
+bm = BlobManager()
+
 
 class Recommender:
 
@@ -32,24 +35,21 @@ class Recommender:
 
     def load_model(self, refresh=False):
         logging.warning('Loading model...')
-        if (refresh
-                or not os.path.isfile(self.model_pickle_file)
-                or os.path.getsize(self.model_pickle_file) == 0):
-
-            logging.warning('Model not found, instantiating a new one...')
+        if refresh or not bm.blob_client.exists():
+            logging.warning('Model not found, creating new one...')
             model = NearestNeighbors(n_neighbors=self.nb + 1) # +1 bc article itself is also returned
             logging.warning('Fitting model...')
-            model.fit(self.embeddings.iloc[:, 1:])
+            model.fit(self.embeddings.iloc[:, 1:]) 
             logging.warning('Model fitted.')
+
             logging.warning('Saving model...')
-            with open(self.model_pickle_file, 'wb') as f:
-                pickle.dump(model, f)
+            bm.send_file(pickle.dumps(model))
             logging.warning('Model saved.')
 
         else:
-            logging.warning('Model found, loading...')
-            with open(self.model_pickle_file, 'rb') as f:
-                model = pickle.load(f)
+            logging.warning('Loading existing model...')
+            downloaded = bm.load_file()
+            model = pickle.loads(downloaded)
     
         logging.warning('Model is ready.')
         return model

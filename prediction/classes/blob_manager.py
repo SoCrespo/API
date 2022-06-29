@@ -20,8 +20,7 @@ class BlobManager:
         """Upload the local file to the blob storage."""
         self.blob_client.upload_blob(file_path, overwrite=True)
 
-    def load_file(self, file_path) -> None:
-        """Download the blob file to the local file_path."""
-        with open(file_path, "wb") as f:
-            f.write(self.blob_client.download_blob().readall())
-    
+    def load_file(self) -> None:
+        """Download the blob file and return its content (bytes)."""
+        dowloaded = self.blob_client.download_blob().readall()
+        return dowloaded

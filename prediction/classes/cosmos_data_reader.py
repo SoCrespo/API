@@ -1,13 +1,7 @@
 # coding=utf-8
+
 import pandas as pd
 from azure.cosmos import CosmosClient
-
-
-import os
-import sys
-CURRENT_DIR = os.getcwd()
-PARENT_DIR = os.path.dirname(CURRENT_DIR)
-sys.path += [CURRENT_DIR, PARENT_DIR]
 from prediction import params
 
 
@@ -25,26 +19,26 @@ class CosmosDataReader:
         """
         print('Connecting to Cosmos DB...')
         self.client = CosmosClient(endpoint, read_key)
-        print('Connected to Cosmos DB.')
+        print('Connected.')
 
         print('Connecting to database...')
         self.database = self.client.get_database_client(database_name)
-        print('Connected to database.')
+        print('Connected.')
 
         print('Connecting to clicks container...')
         self.clicks_container = self.database.get_container_client(
                         clicks_container_name)
-        print('Connected to clicks container.')
+        print('Connected.')
 
         print('Connecting to articles metadata container...')
         self.articles_metadata_container = self.database.get_container_client(
                         articles_metadata_container_name)
-        print('Connected to articles metadata container.')
+        print('Connected.')
 
         print('Connecting to embeddings container...'.ljust(60))    
         self.embeddings_container = self.database.get_container_client(
                         embeddings_container_name)
-        print('Connected to embeddings container.'.ljust(60))
+        print('Connected.'.ljust(60))
 
         print('Ready!'.ljust(60))
     

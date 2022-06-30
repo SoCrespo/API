@@ -1,19 +1,12 @@
 # coding=utf-8
-import logging
+
 import pandas as pd
 from dask import dataframe as ddf
 
-if __name__ == '__main__':
-    import os
-    import sys
-    CURRENT_DIR = os.getcwd()
-    PARENT_DIR = os.path.dirname(CURRENT_DIR)
-    sys.path += [CURRENT_DIR, PARENT_DIR]
-    from prediction import params
-else:    
-    from .. import params
+from prediction import params
 
-root_dir = '/home/sophie/Documents/OPENCLASSROOMS/OC-IA-P9/news-portal-user-interactions-by-globocom/'
+
+root_dir = params.data_dir
 
 
 class LocalDataReader:

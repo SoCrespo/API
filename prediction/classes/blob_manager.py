@@ -1,10 +1,7 @@
-import os
-import sys
-CURRENT_DIR = os.getcwd()
-PARENT_DIR = os.path.dirname(CURRENT_DIR)
-sys.path += [CURRENT_DIR, PARENT_DIR]
-from prediction import params
+# coding=utf-8
+
 from azure.storage.blob import BlobClient    
+from prediction import params
 
 
 class BlobManager:

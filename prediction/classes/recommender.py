@@ -1,14 +1,14 @@
 # coding=utf-8
 
-from sklearn.neighbors import NearestNeighbors
-import pandas as pd
 import pickle
-import os
 import warnings
 import logging
-warnings.filterwarnings("ignore", category=UserWarning)
+import pandas as pd
+from sklearn.neighbors import NearestNeighbors
 from .cosmos_data_reader import CosmosDataReader
 from .blob_manager import BlobManager
+
+warnings.filterwarnings("ignore", category=UserWarning)
 
 cr = CosmosDataReader()
 bm = BlobManager()
@@ -30,7 +30,7 @@ class Recommender:
         logging.warning('Loading embeddings...')
         embeddings = cr.get_embeddings()
         embeddings['article_id'] = embeddings['article_id'].astype(str)
-        logging.warning('Embeddings loaded.')
+        logging.warning('Loaded.')
         return embeddings
 
     def load_model(self, refresh=False):
@@ -40,11 +40,11 @@ class Recommender:
             model = NearestNeighbors(n_neighbors=self.nb + 1) # +1 bc article itself is also returned
             logging.warning('Fitting model...')
             model.fit(self.embeddings.iloc[:, 1:]) 
-            logging.warning('Model fitted.')
+            logging.warning('Fitted.')
 
             logging.warning('Saving model...')
             bm.send_file(pickle.dumps(model))
-            logging.warning('Model saved.')
+            logging.warning('Saved.')
 
         else:
             logging.warning('Loading existing model...')

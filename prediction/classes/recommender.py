@@ -23,7 +23,6 @@ class Recommender:
         """
         self.nb = nb
         self.embeddings = self.load_embeddings()
-        self.model_pickle_file = './knn.pkl'
         self.model = self.load_model()
 
     def load_embeddings(self) -> pd.DataFrame:

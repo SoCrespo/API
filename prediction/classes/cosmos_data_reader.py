@@ -35,12 +35,12 @@ class CosmosDataReader:
                         articles_metadata_container_name)
         print('Connected.')
 
-        print('Connecting to embeddings container...'.ljust(60))    
+        print('Connecting to embeddings container...')    
         self.embeddings_container = self.database.get_container_client(
                         embeddings_container_name)
-        print('Connected.'.ljust(60))
+        print('Connected.')
 
-        print('Ready!'.ljust(60))
+        print('Ready!')
     
     def get_embeddings(self) -> pd.DataFrame:
         """
